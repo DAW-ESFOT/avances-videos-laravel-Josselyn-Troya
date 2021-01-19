@@ -13,13 +13,14 @@ use phpDocumentor\Reflection\Types\Self_;
 
 class ArticleController extends Controller
 {
-    private static $rules = [
-        'title' => 'required|string|unique:articles|max:255',
-        'body' => 'required',
-    ];
+   // private static $rules = [
+    //     'title' => 'required|string|unique:articles|max:255',
+    //    'body' => 'required',
+    //    'category_id' => 'required|exists:categories,id'
+    // ];
     private static $messages = [
         'required' => 'El campo :attribute es obligatorio.',
-        'body.required' => 'Body no valido'
+        'body.required' => 'Body no válido'
     ];
     public function index()
     {
@@ -30,12 +31,17 @@ class ArticleController extends Controller
     }
     public function show(Article $article)
     {
-        return new ArticleResource($article);
+       // return new ArticleResource($article);}
+        return response()->json(new ArticleResource($article), 200);
     }
     public function store(Request $request)
     {
 
-        $request->validate(self::$rules, self::$messages);
+        $request->validate([
+            'title' => 'required|string|unique:articles|max:255',
+            'body' => 'required',
+            'category_id' => 'required|exists:categories,id'
+        ], self::$messages);
 
 
         // $validator = Validator::make($request->all(), [
@@ -54,6 +60,12 @@ class ArticleController extends Controller
     }
     public function update(Request $request, Article $article)
     {
+        $request->validate([
+            'title' => 'required|string|unique:articles,title,'.$article->id.'|max:255',
+            'body' => 'required',
+            'category_id' => 'required|exists:categories,id'
+        ], self::$messages);
+
         $article->update($request->all());
         return response()->json($article, 200);
 
