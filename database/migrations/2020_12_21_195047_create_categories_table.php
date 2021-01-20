@@ -36,7 +36,7 @@ class CreateCategoriesTable extends Migration
         Schema::dropIfExists('category_user');
         Schema::dropIfExists('categories');
         Schema::table('articles', function (Blueprint $table) {
-            $table->dropForeign('category_id');
+          //  $table->dropForeign('category_id');
         });
         Schema::enableForeignKeyConstraints();
     }

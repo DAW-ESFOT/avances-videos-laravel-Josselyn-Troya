@@ -20,12 +20,13 @@ class Article extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'body' => $this->body,
+            'user' => "/api/users/" . $this->user_id,
+            'user_data' => $this->user,
+            'category' => "/api/categories/" . $this->category_id,
+            'category_data' => $this->category,
+            'image' => $this->image,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'user' => "/api/users/" . $this->user_id,
-            'category' => "/api/categories/" . $this->category_id,
-            //'user' => User::find($this->user_id),
-            //'category' => Category::find($this->category_id),
         ];
     }
 }
