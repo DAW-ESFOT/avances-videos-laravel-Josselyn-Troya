@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Admin;
 use App\Models\Category;
 use App\Models\User;
+use App\Models\Writer;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -27,20 +29,30 @@ class UsersTableSeeder extends Seeder
         /// // no se vuelva lento.
         $password = Hash::make('123123');
 
-        User::create([
+        $admin = Admin::create(['credential_number' => '1234567890']);
+
+        $admin->user()->create([
+
             'name'=> 'Administrador',
             'email'=> 'admin@prueba.com',
-            'password'=> $password,]);
+            'password'=> $password,
+            'role' => 'ROLE_ADMIN'
+            ]);
 
         // Generar algunos usuarios para nuestra aplicacion
         for($i = 0; $i < 10; $i++) {
-            $user = User::create([
+            $writer = Writer::create([
+                'editorial'=> $faker->company,
+                'short_bio' => $faker->paragraph
+            ]);
+
+            $writer->user()->create([
                 'name'=> $faker->name,
                 'email'=> $faker->email,
                 'password'=> $password,
                 ]);
 
-            $user->categories()->saveMany(
+            $writer->user->categories()->saveMany(
                 $faker->randomElements(
                     array(
                         Category::find(1),
